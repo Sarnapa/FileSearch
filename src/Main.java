@@ -4,13 +4,20 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class Main extends Application {
+public class Main extends Application
+{
+
+    // Ograniczenia dla okna początkowego - stały rozmiar
+    private final int WIDTH = 600;
+    private final int HEIGHT = 450;
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource(""));
-        primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 300, 275));
+    public void start(Stage primaryStage) throws Exception
+    {
+        Parent root = FXMLLoader.load(getClass().getResource("/Views/MainView.fxml"));
+        primaryStage.setTitle("Wyszukiwarka plików");
+        primaryStage.setResizable(false);
+        primaryStage.setScene(new Scene(root, WIDTH,  HEIGHT));
         primaryStage.show();
     }
 
