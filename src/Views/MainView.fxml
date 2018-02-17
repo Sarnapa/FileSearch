@@ -3,59 +3,142 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.MainController">
    <children>
-      <VBox prefHeight="200.0" prefWidth="100.0">
+      <HBox fx:id="directoryChooserHBox" prefHeight="100.0" prefWidth="200.0">
          <children>
-            <Label text="Podaj katalog początkowy:">
-               <VBox.margin>
-                  <Insets bottom="5.0" />
-               </VBox.margin></Label>
+            <Label maxWidth="188.0" minWidth="188.0" prefWidth="188.0" text="Podaj katalog początkowy:">
+               <HBox.margin>
+                  <Insets right="10.0" top="5.0" />
+               </HBox.margin>
+               <font>
+                  <Font size="14.0" />
+               </font></Label>
          </children>
-      </VBox>
-      <VBox prefHeight="200.0" prefWidth="100.0">
+         <VBox.margin>
+            <Insets bottom="30.0" />
+         </VBox.margin>
+      </HBox>
+      <HBox prefHeight="100.0" prefWidth="200.0">
          <children>
             <Label text="Podaj rozszerzenie plików:">
-               <VBox.margin>
-                  <Insets bottom="5.0" />
-               </VBox.margin></Label>
-            <TextField>
-               <VBox.margin>
-                  <Insets top="10.0" />
-               </VBox.margin></TextField>
+               <HBox.margin>
+                  <Insets right="10.0" top="5.0" />
+               </HBox.margin>
+               <font>
+                  <Font size="14.0" />
+               </font></Label>
+            <TextField fx:id="fileExtensionTextField">
+               <font>
+                  <Font size="14.0" />
+               </font></TextField>
          </children>
+         <VBox.margin>
+            <Insets bottom="30.0" />
+         </VBox.margin>
+      </HBox>
+      <VBox prefHeight="200.0" prefWidth="100.0">
+         <children>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Label text="Podaj poszukiwany ciąg bajtów:">
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font size="14.0" />
+                     </font></Label>
+                  <RadioButton fx:id="binFormatForOldBytesSeqRadioButton" mnemonicParsing="false" selected="true" text="Format binarny">
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <toggleGroup>
+                        <ToggleGroup fx:id="oldBytesSeqFormat" />
+                     </toggleGroup></RadioButton>
+                  <RadioButton fx:id="hexFormatForOldBytesSeqRadioButton" mnemonicParsing="false" text="Format heksadecymalny" toggleGroup="$oldBytesSeqFormat">
+                     <font>
+                        <Font size="14.0" />
+                     </font></RadioButton>
+               </children>
+            </HBox>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <TextField fx:id="oldByteSeqTextField" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="20.0">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </TextField>
+               </children>
+            </AnchorPane>
+         </children>
+         <VBox.margin>
+            <Insets bottom="30.0" />
+         </VBox.margin>
       </VBox>
       <VBox prefHeight="200.0" prefWidth="100.0">
          <children>
-            <Label text="Podaj poszukiwany ciąg bajtów:">
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Label text="Podaj nowy ciąg bajtów:">
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font size="14.0" />
+                     </font></Label>
+                  <RadioButton fx:id="binFormatForNewBytesSeqRadioButton" mnemonicParsing="false" selected="true" text="Format binarny">
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <toggleGroup>
+                        <ToggleGroup fx:id="newBytesSeqFormat" />
+                     </toggleGroup></RadioButton>
+                  <RadioButton fx:id="hexFormatForNewBytesSeqRadioButton" mnemonicParsing="false" text="Format heksadecymalny" toggleGroup="$newBytesSeqFormat">
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font size="14.0" />
+                     </font></RadioButton>
+               </children>
                <VBox.margin>
-                  <Insets bottom="5.0" />
-               </VBox.margin></Label>
-            <TextField>
-               <VBox.margin>
-                  <Insets top="10.0" />
-               </VBox.margin></TextField>
+                  <Insets />
+               </VBox.margin>
+            </HBox>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <TextField fx:id="newByteSeqTextField" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="20.0">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </TextField>
+               </children>
+            </AnchorPane>
          </children>
-      </VBox>
-      <VBox prefHeight="200.0" prefWidth="100.0">
-         <children>
-            <Label text="Podaj nowy ciąg bajtów:">
-               <VBox.margin>
-                  <Insets bottom="5.0" />
-               </VBox.margin></Label>
-            <TextField>
-               <VBox.margin>
-                  <Insets top="10.0" />
-               </VBox.margin></TextField>
-         </children>
+         <VBox.margin>
+            <Insets bottom="30.0" />
+         </VBox.margin>
       </VBox>
       <AnchorPane>
          <children>
-            <Button mnemonicParsing="false" text="Start" AnchorPane.rightAnchor="5.0" />
+            <Button fx:id="startOrSuspendButton" mnemonicParsing="false" text="Start" AnchorPane.rightAnchor="5.0">
+               <font>
+                  <Font size="14.0" />
+               </font></Button>
          </children>
          <VBox.margin>
             <Insets />
