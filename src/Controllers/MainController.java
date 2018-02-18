@@ -9,9 +9,14 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
 import javafx.stage.DirectoryChooser;
 import java.io.File;
+import Controllers.Helpers.ControllersConverter;
+
+import static Controllers.Helpers.ControllersConverter.binStringToByteArray;
+import static Controllers.Helpers.ControllersConverter.hexStringToByteArray;
 
 public class MainController
 {
+    private Button btnOpenDirectoryChooser;
     @FXML
     private TextField fileExtensionTextField;
     @FXML
@@ -31,7 +36,7 @@ public class MainController
     @FXML
     private HBox directoryChooserHBox;
 
-    private Thread filesProcessingThread;
+    private FileSearchModel fileSearchModelTask;
     // dla ulatwienia - zeby pozniej nie wydobywac tego z tekstu przycisku
     private String rootDirectory;
     // pola do sprawdzania, czy do danych pol zostaly wprowadzone poprawne wartosci
@@ -96,7 +101,7 @@ public class MainController
     // Nie ma możliwosci wstawienia DirectoryChooser poprzez SceneBuildera
     private void setDirectoryChooserButton()
     {
-        Button btnOpenDirectoryChooser = new Button();
+        btnOpenDirectoryChooser = new Button();
         btnOpenDirectoryChooser.setText("Wybierz katalog");
         btnOpenDirectoryChooser.setOnAction(event ->
         {
@@ -189,6 +194,31 @@ public class MainController
         }
     }
 
+    // Uruchomienie taska do wykonywania programu
+    private void startFilesProcessing()
+    {
+        String fileExtension = fileExtensionTextField.getText();
+        byte[] oldByteSeq = getByteArray(binFormatForOldByteSeqRadioButton, hexFormatForOldByteSeqRadioButton,
+                oldByteSeqTextField.getText());
+        byte[] newByteSeq = getByteArray(binFormatForNewByteSeqRadioButton, hexFormatForNewByteSeqRadioButton,
+                newByteSeqTextField.getText());
+        fileSearchModelTask = new FileSearchModel(rootDirectory, fileExtension, oldByteSeq, newByteSeq);
+        Thread filesProcessingThread = new Thread(fileSearchModelTask);
+        filesProcessingThread.start();
+        setInputFieldsDisable(true);
+        startOrSuspendButton.setText("Stop");
+        startOrSuspendButton.setOnAction(e -> suspendFilesProcessing());
+    }
+
+    // Zatrzymanie taska
+    private void suspendFilesProcessing()
+    {
+        fileSearchModelTask.cancel();
+        setInputFieldsDisable(false);
+        startOrSuspendButton.setText("Start");
+        startOrSuspendButton.setOnAction(e -> startFilesProcessing());
+    }
+
     // Metody pomocnicze
 
     private void setValidTemplateForTextField(TextField textField)
@@ -221,15 +251,27 @@ public class MainController
             startOrSuspendButton.setDisable(true);
     }
 
-    // Uruchomienie taska do wykonywania programu
-    private void startFilesProcessing()
+    private void setInputFieldsDisable(boolean value)
     {
-        String fileExtension = fileExtensionTextField.getText();
-        byte[] oldByteSeq = oldByteSeqTextField.getText().getBytes();
-        byte[] newByteSeq = newByteSeqTextField.getText().getBytes();
-        FileSearchModel fileSearchModel = new FileSearchModel(rootDirectory, fileExtension, oldByteSeq, newByteSeq);
-        filesProcessingThread = new Thread(fileSearchModel);
-        filesProcessingThread.start();
+        btnOpenDirectoryChooser.setDisable(value);
+        fileExtensionTextField.setDisable(value);
+        oldByteSeqTextField.setDisable(value);
+        binFormatForOldByteSeqRadioButton.setDisable(value);
+        hexFormatForOldByteSeqRadioButton.setDisable(value);
+        newByteSeqTextField.setDisable(value);
+        binFormatForNewByteSeqRadioButton.setDisable(value);
+        hexFormatForNewByteSeqRadioButton.setDisable(value);
+    }
+
+    private static byte[] getByteArray(RadioButton binFormatForByteSeqRadioButton, RadioButton hexFormatForByteSeqRadioButton,
+                                       String value)
+    {
+        if(binFormatForByteSeqRadioButton.isSelected())
+            return binStringToByteArray(value);
+        else if(hexFormatForByteSeqRadioButton.isSelected())
+            return hexStringToByteArray(value);
+        // w przypadku bledu
+        else return null;
     }
 
 }

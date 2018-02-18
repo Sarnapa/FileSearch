@@ -22,7 +22,7 @@ public class FileSearchModel extends Task<Void>
     }
 
     @Override
-    protected Void call() throws Exception
+    protected Void call()
     {
         for(int i = 0; i < 10000000; ++i)
         {
@@ -31,6 +31,21 @@ public class FileSearchModel extends Task<Void>
             System.out.println("fileExtension: " + fileExtension);
             System.out.println("oldBytes: " + Arrays.toString(oldByteSeq));
             System.out.println("newBytes: " + Arrays.toString(newByteSeq));
+            if(isCancelled())
+            {
+                break;
+            }
+            try
+            {
+                Thread.sleep(100);
+            }
+            catch (InterruptedException e)
+            {
+                if(isCancelled())
+                {
+                    break;
+                }
+            }
         }
         return null;
     }
