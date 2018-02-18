@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.MainController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="root" stylesheets="@MainView.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.MainController">
    <children>
       <HBox fx:id="directoryChooserHBox" prefHeight="100.0" prefWidth="200.0">
          <children>
@@ -56,7 +56,7 @@
                      <font>
                         <Font size="14.0" />
                      </font></Label>
-                  <RadioButton fx:id="binFormatForOldBytesSeqRadioButton" mnemonicParsing="false" selected="true" text="Format binarny">
+                  <RadioButton fx:id="binFormatForOldByteSeqRadioButton" mnemonicParsing="false" selected="true" text="Format binarny">
                      <HBox.margin>
                         <Insets right="10.0" />
                      </HBox.margin>
@@ -64,9 +64,9 @@
                         <Font size="14.0" />
                      </font>
                      <toggleGroup>
-                        <ToggleGroup fx:id="oldBytesSeqFormat" />
+                        <ToggleGroup fx:id="oldByteSeqFormat" />
                      </toggleGroup></RadioButton>
-                  <RadioButton fx:id="hexFormatForOldBytesSeqRadioButton" mnemonicParsing="false" text="Format heksadecymalny" toggleGroup="$oldBytesSeqFormat">
+                  <RadioButton fx:id="hexFormatForOldByteSeqRadioButton" mnemonicParsing="false" text="Format heksadecymalny" toggleGroup="$oldByteSeqFormat">
                      <font>
                         <Font size="14.0" />
                      </font></RadioButton>
@@ -97,7 +97,7 @@
                      <font>
                         <Font size="14.0" />
                      </font></Label>
-                  <RadioButton fx:id="binFormatForNewBytesSeqRadioButton" mnemonicParsing="false" selected="true" text="Format binarny">
+                  <RadioButton fx:id="binFormatForNewByteSeqRadioButton" mnemonicParsing="false" selected="true" text="Format binarny">
                      <HBox.margin>
                         <Insets right="10.0" />
                      </HBox.margin>
@@ -105,9 +105,9 @@
                         <Font size="14.0" />
                      </font>
                      <toggleGroup>
-                        <ToggleGroup fx:id="newBytesSeqFormat" />
+                        <ToggleGroup fx:id="newByteSeqFormat" />
                      </toggleGroup></RadioButton>
-                  <RadioButton fx:id="hexFormatForNewBytesSeqRadioButton" mnemonicParsing="false" text="Format heksadecymalny" toggleGroup="$newBytesSeqFormat">
+                  <RadioButton fx:id="hexFormatForNewByteSeqRadioButton" mnemonicParsing="false" text="Format heksadecymalny" toggleGroup="$newByteSeqFormat">
                      <HBox.margin>
                         <Insets right="10.0" />
                      </HBox.margin>
@@ -147,7 +147,4 @@
    <opaqueInsets>
       <Insets />
    </opaqueInsets>
-   <padding>
-      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-   </padding>
 </VBox>

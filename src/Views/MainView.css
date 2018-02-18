@@ -1,0 +1,8 @@
+.root{
+    -fx-padding: 10px;
+    -fx-font-size: 14px;
+}
+
+.invalidTextField{
+    -fx-border-color: red;
+}
