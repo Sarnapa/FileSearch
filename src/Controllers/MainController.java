@@ -125,12 +125,13 @@ public class MainController
     {
         if(!newValue)
         {
-            Tooltip tooltip = new Tooltip();
+            //Tooltip tooltip = new Tooltip();
             String fileExtensionText = fileExtensionTextField.getText();
             if(fileExtensionText.isEmpty())
             {
-                setNotValidTemplateForTextField(fileExtensionTextField, tooltip, "Pole nie może być puste!");
-                isFileExtensionTextFieldValid = false;
+                //setNotValidTemplateForTextField(fileExtensionTextField, tooltip, "Pole nie może być puste!");
+                setValidTemplateForTextField(fileExtensionTextField);
+                isFileExtensionTextFieldValid = true;
             }
             else
             {
