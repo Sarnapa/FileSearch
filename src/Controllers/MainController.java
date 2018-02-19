@@ -9,7 +9,6 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
 import javafx.stage.DirectoryChooser;
 import java.io.File;
-import Controllers.Helpers.ControllersConverter;
 
 import static Controllers.Helpers.ControllersConverter.binStringToByteArray;
 import static Controllers.Helpers.ControllersConverter.hexStringToByteArray;
