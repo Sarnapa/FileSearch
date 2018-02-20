@@ -8,6 +8,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
 import javafx.stage.DirectoryChooser;
+
 import java.io.File;
 
 import static Controllers.Helpers.ControllersConverter.binStringToByteArray;
@@ -39,9 +40,11 @@ public class MainController
     // dla ulatwienia - zeby pozniej nie wydobywac tego z tekstu przycisku
     private String rootDirectory;
     // pola do sprawdzania, czy do danych pol zostaly wprowadzone poprawne wartosci
-    private boolean isFileExtensionTextFieldValid = false;
+    // uznajemy, ze to pole moze byc puste i szukamy plikow bez rozszerzenia
+    private boolean isFileExtensionTextFieldValid = true;
     private boolean isOldByteSeqTextFieldValid = false;
-    private boolean isNewByteSeqTextFieldValid = false;
+    // uznajemy ze to pole moze byc puste i po prostu usuwamy wskazane bajty
+    private boolean isNewByteSeqTextFieldValid = true;
 
     public MainController()
     { }
@@ -211,6 +214,12 @@ public class MainController
         byte[] newByteSeq = getByteArray(binFormatForNewByteSeqRadioButton, hexFormatForNewByteSeqRadioButton,
                 newByteSeqTextField.getText());
         fileSearchModelTask = new FileSearchModel(rootDirectory, fileExtension, oldByteSeq, newByteSeq);
+        fileSearchModelTask.setOnSucceeded(e ->
+        {
+            setInputFieldsDisable(false);
+            startOrSuspendButton.setText("Start");
+            startOrSuspendButton.setOnAction(e1 -> startFilesProcessing());
+        });
         Thread filesProcessingThread = new Thread(fileSearchModelTask);
         filesProcessingThread.start();
         setInputFieldsDisable(true);

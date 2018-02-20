@@ -36,6 +36,7 @@ public class FileSearchModel extends Task<Void>
     protected Void call()
     {
         searchFiles();
+        printFilesList();
         if(!isCancelled())
             modifyFiles();
         printFilesStatsMap();
@@ -110,6 +111,7 @@ public class FileSearchModel extends Task<Void>
         List<File> allFiles = (List<File>)FileUtils.listFiles(currentRoot, TrueFileFilter.INSTANCE, null);
         for(File file: allFiles)
         {
+            //System.out.println(file.getAbsolutePath());
             if(FilenameUtils.getExtension(file.getName()).equals(fileExtension))
                 filesList.add(file);
         }

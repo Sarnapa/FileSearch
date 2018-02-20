@@ -31,6 +31,7 @@ class FileService
     {
         try
         {
+            // zostal wybrany taki dostep do pliku, poniewaz ta klasa umozliwia ustawienie pozycji w pliku
             inputStream = new RandomAccessFile(oldFile, "r");
             outputStream = new BufferedOutputStream(new FileOutputStream(newFile));
         }
@@ -56,6 +57,7 @@ class FileService
     void suspendService()
     {
         failed = true;
+        modificationCounter = 0;
     }
 
     int readFromFile() throws IOException
@@ -80,7 +82,7 @@ class FileService
     {
         try
         {
-            System.out.println(Arrays.toString(readerBuffer));
+            //System.out.println(Arrays.toString(readerBuffer));
             if (Arrays.equals(readerBuffer, oldByteSeq))
             {
                 modificationCounter++;
