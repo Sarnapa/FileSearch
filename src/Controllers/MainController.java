@@ -152,8 +152,16 @@ public class MainController
             String bytesSeqText = textField.getText();
             if(bytesSeqText.isEmpty())
             {
-                setNotValidTemplateForTextField(textField, tooltip, "Pole nie może być puste!");
-                setIsByteSeqTextFieldValid(textField, false);
+                if(textField == oldByteSeqTextField)
+                {
+                    setNotValidTemplateForTextField(textField, tooltip, "Pole nie może być puste!");
+                    setIsByteSeqTextFieldValid(textField, false);
+                }
+                else if(textField == newByteSeqTextField)
+                {
+                    setValidTemplateForTextField(textField);
+                    setIsByteSeqTextFieldValid(textField, true);
+                }
             }
             else if(binRadioButton.isSelected())
             {

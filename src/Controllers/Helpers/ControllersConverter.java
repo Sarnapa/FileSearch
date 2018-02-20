@@ -9,6 +9,8 @@ public final class ControllersConverter
     public static byte[] binStringToByteArray(String value)
     {
         int valueLength = value.length();
+        if(valueLength == 0)
+            return new byte[0];
         if(valueLength % 8 == 0)
         {
             BigInteger binValue = new BigInteger(value, 2);
@@ -28,6 +30,8 @@ public final class ControllersConverter
     public static byte[] hexStringToByteArray(String value)
     {
         int valueLength = value.length();
+        if(valueLength == 0)
+            return new byte[0];
         if(valueLength % 2 == 0)
         {
             BigInteger hexValue = new BigInteger(value, 16);

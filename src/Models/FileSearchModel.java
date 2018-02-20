@@ -100,7 +100,7 @@ public class FileSearchModel extends Task<Void>
             }
             catch(Exception e)
             {
-                errorsMap.put(file, e);
+                errorsMap.put(file, new Exception(e));
             }
         }
     }
