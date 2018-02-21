@@ -23,6 +23,20 @@ public class FileSearchModel extends Task<Void>
     // Zawiera informacje o wszystkich bledach jakie wystapily
     private HashMap<File, Exception> errorsMap = new HashMap<>();
 
+    public ArrayList<File> getFilesList()
+    {
+        return filesList;
+    }
+
+    public HashMap<File, Integer> getFilesStatsMap()
+    {
+        return filesStatsMap;
+    }
+
+    public HashMap<File, Exception> getErrorsMap()
+    {
+        return errorsMap;
+    }
 
     public FileSearchModel(String rootDirectory, String fileExtension, byte[] oldByteSeq, byte[] newByteSeq)
     {

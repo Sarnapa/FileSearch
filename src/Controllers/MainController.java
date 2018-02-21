@@ -2,14 +2,17 @@ package Controllers;
 
 import Models.FileSearchModel;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
 import javafx.stage.DirectoryChooser;
-
 import java.io.File;
+import java.io.IOException;
+import java.time.LocalDateTime;
 
 import static Controllers.Helpers.ControllersConverter.binStringToByteArray;
 import static Controllers.Helpers.ControllersConverter.hexStringToByteArray;
@@ -45,6 +48,8 @@ public class MainController
     private boolean isOldByteSeqTextFieldValid = false;
     // uznajemy ze to pole moze byc puste i po prostu usuwamy wskazane bajty
     private boolean isNewByteSeqTextFieldValid = true;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
 
     public MainController()
     { }
@@ -219,9 +224,12 @@ public class MainController
             setInputFieldsDisable(false);
             startOrSuspendButton.setText("Start");
             startOrSuspendButton.setOnAction(e1 -> startFilesProcessing());
+            endTime = LocalDateTime.now();
+            showResultView();
         });
         Thread filesProcessingThread = new Thread(fileSearchModelTask);
         filesProcessingThread.start();
+        startTime = LocalDateTime.now();
         setInputFieldsDisable(true);
         startOrSuspendButton.setText("Stop");
         startOrSuspendButton.setOnAction(e -> suspendFilesProcessing());
@@ -234,6 +242,8 @@ public class MainController
         setInputFieldsDisable(false);
         startOrSuspendButton.setText("Start");
         startOrSuspendButton.setOnAction(e -> startFilesProcessing());
+        endTime = LocalDateTime.now();
+        showResultView();
     }
 
     // Metody pomocnicze
@@ -289,6 +299,33 @@ public class MainController
             return hexStringToByteArray(value);
         // w przypadku bledu
         else return null;
+    }
+
+    private void showResultView()
+    {
+        FXMLLoader ResultWindowLoader = new FXMLLoader(getClass().getResource("../Views/ResultView.fxml"));
+        Parent root = null;
+        try
+        {
+            root = ResultWindowLoader.load();
+        }
+        catch (IOException e)
+        {
+            System.out.println(e.getMessage());
+            System.exit(-1);
+        }
+        ResultController resultController = ResultWindowLoader.getController();
+        resultController.setRootDirectory(rootDirectory);
+        resultController.setExtensionFile(fileExtensionTextField.getText());
+        resultController.setOldByteSeq(oldByteSeqTextField.getText());
+        resultController.setNewByteSeq(newByteSeqTextField.getText());
+        resultController.setStartTime(startTime);
+        resultController.setEndTime(endTime);
+        resultController.setFilesList(fileSearchModelTask.getFilesList());
+        resultController.setFilesStatsMap(fileSearchModelTask.getFilesStatsMap());
+        resultController.setErrorsMap(fileSearchModelTask.getErrorsMap());
+        resultController.init(root);
+        resultController.showWindow();
     }
 
 }
