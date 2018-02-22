@@ -102,6 +102,7 @@ class FileService
         }
     }
 
+    // do nadania tymczasowej nazwy dla pliku, do ktorego bedziemy pisac
     private void setNewFile() throws Exception
     {
         String fileExtension = FilenameUtils.getExtension(oldFile.getName());

@@ -13,12 +13,15 @@ import javafx.stage.DirectoryChooser;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 
 import static Controllers.Helpers.ControllersConverter.binStringToByteArray;
 import static Controllers.Helpers.ControllersConverter.hexStringToByteArray;
 
 public class MainController
 {
+    @FXML
     private Button btnOpenDirectoryChooser;
     @FXML
     private TextField fileExtensionTextField;
@@ -50,6 +53,14 @@ public class MainController
     private boolean isNewByteSeqTextFieldValid = true;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
+    // lista rozszerzen plikow, ktore nie sa akceptowane przez program (pliki wykonywalne itp)
+    private final static List<String> highRiskFileExtensions = Arrays.asList(
+        "ACTION", "APK", "APP", "BAT", "BIN", "CMD", "COM", "COMMAND", "CPL",
+        "CSH", "EXE", "GADGET", "INF", "INS", "INX", "IPA", "ISU", "JOB", "JSE",
+        "KSH", "LNK", "MSC", "MSI", "MSP", "MST", "OSX", "OUT", "PAF", "PIF", "PRG",
+        "PS1", "REG", "RGS", "RUN", "SCR", "SCT", "SHB", "SHS", "U3P", "VB", "VBE",
+        "VBS", "VBSCRIPT", "WORKFLOW", "WS", "WSF", "WSH"
+    );
 
     public MainController()
     { }
@@ -129,17 +140,17 @@ public class MainController
         directoryChooserHBox.getChildren().add(btnOpenDirectoryChooser);
     }
 
+    // Walidacja pola tekstowego do podania rozszerzenia plikow
     private void validateFileExtensionTextField(Boolean newValue)
     {
         if(!newValue)
         {
-            //Tooltip tooltip = new Tooltip();
+            Tooltip tooltip = new Tooltip();
             String fileExtensionText = fileExtensionTextField.getText();
-            if(fileExtensionText.isEmpty())
+            if(checkIfHighRiskFileExtension(fileExtensionText))
             {
-                //setNotValidTemplateForTextField(fileExtensionTextField, tooltip, "Pole nie może być puste!");
-                setValidTemplateForTextField(fileExtensionTextField);
-                isFileExtensionTextFieldValid = true;
+                setNotValidTemplateForTextField(fileExtensionTextField, tooltip, "Format nieakceptowany!");
+                isFileExtensionTextFieldValid = false;
             }
             else
             {
@@ -229,6 +240,7 @@ public class MainController
         byte[] newByteSeq = getByteArray(binFormatForNewByteSeqRadioButton, hexFormatForNewByteSeqRadioButton,
                 newByteSeqTextField.getText());
         fileSearchModelTask = new FileSearchModel(rootDirectory, fileExtension, oldByteSeq, newByteSeq);
+        // Gdy zlecone zadanie sie zakonczy
         fileSearchModelTask.setOnSucceeded(e ->
         {
             setInputFieldsDisable(false);
@@ -309,6 +321,12 @@ public class MainController
             return hexStringToByteArray(value);
         // w przypadku bledu
         else return null;
+    }
+
+    // sprawdza, czy podane rozszerzenie jest na liscie rozszerzen plikow, ktore sa wykonywalne
+    private boolean checkIfHighRiskFileExtension(String fileExtensionText)
+    {
+        return highRiskFileExtensions.contains(fileExtensionText.toUpperCase());
     }
 
     private void showResultView()
