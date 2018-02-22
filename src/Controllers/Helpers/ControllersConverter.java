@@ -17,12 +17,12 @@ public final class ControllersConverter
         {
             BigInteger binValue = new BigInteger(value, 2);
             byte[] byteArray = binValue.toByteArray();
-            if (byteArray[0] == 0)
-            {
-                byte[] tmp = new byte[byteArray.length - 1];
-                System.arraycopy(byteArray, 1, tmp, 0, tmp.length);
-                byteArray = tmp;
-            }
+            byte[] tmp = new byte[valueLength / 8];
+            if (byteArray[0] == 0 && binValue.longValue() != 0)
+                System.arraycopy(byteArray, 1, tmp, tmp.length - byteArray.length + 1, byteArray.length - 1);
+            else
+                System.arraycopy(byteArray, 0, tmp, tmp.length - byteArray.length, byteArray.length);
+            byteArray = tmp;
             return byteArray;
         }
         else
@@ -38,12 +38,12 @@ public final class ControllersConverter
         {
             BigInteger hexValue = new BigInteger(value, 16);
             byte[] byteArray = hexValue.toByteArray();
-            if (byteArray[0] == 0)
-            {
-                byte[] tmp = new byte[byteArray.length - 1];
-                System.arraycopy(byteArray, 1, tmp, 0, tmp.length);
-                byteArray = tmp;
-            }
+            byte[] tmp = new byte[valueLength / 2];
+            if (byteArray[0] == 0 && hexValue.longValue() != 0)
+                System.arraycopy(byteArray, 1, tmp, tmp.length - byteArray.length + 1, byteArray.length - 1);
+            else
+                System.arraycopy(byteArray, 0, tmp, tmp.length - byteArray.length, byteArray.length);
+            byteArray = tmp;
             return byteArray;
         }
         else
