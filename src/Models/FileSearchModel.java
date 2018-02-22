@@ -3,10 +3,7 @@ package Models;
 import javafx.concurrent.Task;
 import java.io.File;
 import java.io.FileFilter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.filefilter.*;
@@ -18,22 +15,17 @@ public class FileSearchModel extends Task<Void>
     private byte[] oldByteSeq;
     private byte[] newByteSeq;
     private ArrayList<File> filesList = new ArrayList<>();
-    // Zawiera informacje, ile modyfikacji nastapilo w danym pliku
-    private HashMap<File, Integer> filesStatsMap = new HashMap<>();
-    // Zawiera informacje o wszystkich bledach jakie wystapily
-    private HashMap<File, Exception> errorsMap = new HashMap<>();
+    // Zawiera informacje, ile modyfikacji nastapilo w danym pliku - LinkedHashMap bo zalezalo mi na kolejnosci wstawiania
+    private Map<String, Integer> filesStatsMap = new LinkedHashMap<>();
+    // Zawiera informacje o wszystkich bledach jakie wystapily - LinkedHashMap bo zalezalo mi na kolejnosci wstawiania
+    private Map<String, Exception> errorsMap = new LinkedHashMap<>();
 
-    public ArrayList<File> getFilesList()
-    {
-        return filesList;
-    }
-
-    public HashMap<File, Integer> getFilesStatsMap()
+    public Map<String, Integer> getFilesStatsMap()
     {
         return filesStatsMap;
     }
 
-    public HashMap<File, Exception> getErrorsMap()
+    public Map<String, Exception> getErrorsMap()
     {
         return errorsMap;
     }
@@ -50,21 +42,21 @@ public class FileSearchModel extends Task<Void>
     protected Void call()
     {
         searchFiles();
-        printFilesList();
+        //printFilesList();
         if(!isCancelled())
             modifyFiles();
-        printFilesStatsMap();
-        printErrorsMap();
+        //printFilesStatsMap();
+        //printErrorsMap();
         return null;
     }
 
     private void searchFiles()
     {
-        Stack<File> dirsList = new Stack<>();
-        dirsList.push(new File(rootDirectory));
-        while(!dirsList.empty())
+        Queue<File> dirsList = new LinkedList<>();
+        dirsList.add(new File(rootDirectory));
+        while(dirsList.size() != 0)
         {
-            File currentRoot = dirsList.pop();
+            File currentRoot = dirsList.remove();
             getFilesAndDirs(currentRoot, dirsList);
             if(isCancelled())
                 break;
@@ -111,16 +103,16 @@ public class FileSearchModel extends Task<Void>
                     }
                 }
                 int modificationCount = fileService.close();
-                filesStatsMap.put(file, modificationCount);
+                filesStatsMap.put(getFilename(file), modificationCount);
             }
             catch(Exception e)
             {
-                errorsMap.put(file, new Exception(e));
+                errorsMap.put(getFilename(file), new Exception(e));
             }
         }
     }
 
-    private void getFilesAndDirs(File currentRoot, Stack<File> dirsList)
+    private void getFilesAndDirs(File currentRoot, Queue<File> dirsList)
     {
         List<File> allFiles = (List<File>)FileUtils.listFiles(currentRoot, TrueFileFilter.INSTANCE, null);
         for(File file: allFiles)
@@ -131,10 +123,12 @@ public class FileSearchModel extends Task<Void>
         }
         File[] subDirs = currentRoot.listFiles((FileFilter) DirectoryFileFilter.DIRECTORY);
         if(subDirs != null)
-            for(File subDir: subDirs)
-            {
-                dirsList.push(subDir);
-            }
+            Collections.addAll(dirsList, subDirs);
+    }
+
+    private String getFilename(File file)
+    {
+        return file.getAbsolutePath().replaceFirst(rootDirectory + File.separator, "");
     }
 
     private void printFilesList()
@@ -147,7 +141,7 @@ public class FileSearchModel extends Task<Void>
     private void printFilesStatsMap()
     {
         System.out.println("Statystyki zmian w plikach(Plik - Ilość zmian):");
-        for(File file: filesStatsMap.keySet())
+        for(String file: filesStatsMap.keySet())
         {
             System.out.println(file + " - " + filesStatsMap.get(file));
         }
@@ -156,7 +150,7 @@ public class FileSearchModel extends Task<Void>
     private void printErrorsMap()
     {
         System.out.println("Błędy dotyczące modyfikacji plików(Plik - Informacja o błędzie):");
-        for(File file: errorsMap.keySet())
+        for(String file: errorsMap.keySet())
         {
             System.out.println(file + " - " + errorsMap.get(file).getMessage());
         }

@@ -21,15 +21,15 @@
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <ScrollPane fx:id="mainDataScrollPane" focusTraversable="false" vbarPolicy="NEVER">
+      <ScrollPane fx:id="mainDataScrollPane" fitToHeight="true" focusTraversable="false" vbarPolicy="NEVER">
          <GridPane.margin>
-            <Insets left="10.0" top="10.0" />
+            <Insets />
          </GridPane.margin>
          <content>
-            <GridPane>
+            <GridPane fx:id="mainDataGridPane">
               <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="NEVER" maxWidth="190.0" minWidth="190.0" prefWidth="190.0" />
+                <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" minWidth="10.0" />
               </columnConstraints>
               <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -40,12 +40,12 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Label text="Katalog początkowy:" />
-                  <Label text="Rozszerzenie plików:" GridPane.rowIndex="1" />
-                  <Label text="Poszukiwany ciąg bajtów:" GridPane.rowIndex="2" />
-                  <Label text="Nowy ciąg bajtów:" GridPane.rowIndex="3" />
-                  <Label text="Godzina rozpoczęcia:" GridPane.rowIndex="4" />
-                  <Label text="Godzina zakończenia:" GridPane.rowIndex="5" />
+                  <Label maxWidth="190.0" minWidth="190.0" prefWidth="190.0" text="Katalog początkowy:" />
+                  <Label maxWidth="190.0" minWidth="190.0" prefWidth="190.0" text="Rozszerzenie plików:" GridPane.rowIndex="1" />
+                  <Label maxWidth="190.0" minWidth="190.0" prefWidth="190.0" text="Poszukiwany ciąg bajtów:" GridPane.rowIndex="2" />
+                  <Label maxWidth="190.0" minWidth="190.0" prefWidth="190.0" text="Nowy ciąg bajtów:" GridPane.rowIndex="3" />
+                  <Label maxWidth="190.0" minWidth="190.0" prefWidth="190.0" text="Godzina rozpoczęcia:" GridPane.rowIndex="4" />
+                  <Label maxWidth="190.0" minWidth="190.0" prefWidth="190.0" text="Godzina zakończenia:" GridPane.rowIndex="5" />
                   <Label fx:id="rootDirectoryLabel" text="Label" GridPane.columnIndex="1" />
                   <Label fx:id="extensionFileLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <Label fx:id="oldByteSeqLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2" />
@@ -53,6 +53,9 @@
                   <Label fx:id="startTimeLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                   <Label fx:id="endTimeLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                </children>
+               <padding>
+                  <Insets left="10.0" right="10.0" top="10.0" />
+               </padding>
             </GridPane>
          </content>
       </ScrollPane>
@@ -96,8 +99,8 @@
             </Label>
             <TableView fx:id="errorsTableView" focusTraversable="false" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
               <columns>
-                <TableColumn prefWidth="183.0" text="Plik" />
-                <TableColumn prefWidth="196.0" text="Błąd" />
+                <TableColumn editable="false" prefWidth="183.0" text="Plik" />
+                <TableColumn editable="false" prefWidth="196.0" sortable="false" text="Błąd" />
               </columns>
             </TableView>
          </children>

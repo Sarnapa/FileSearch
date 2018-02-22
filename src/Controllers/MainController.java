@@ -173,7 +173,12 @@ public class MainController
             }
             else if(binRadioButton.isSelected())
             {
-                if (!bytesSeqText.matches("[01]+"))
+                if(bytesSeqText.length() > 32768) // nie mozna wprowadzic wiecej niz 4KB
+                {
+                    setNotValidTemplateForTextField(textField, tooltip, "Maksymalnie można wprowadzić 4KB!");
+                    setIsByteSeqTextFieldValid(textField, false);
+                }
+                else if (!bytesSeqText.matches("[01]+"))
                 {
                     setNotValidTemplateForTextField(textField, tooltip, "Wprowadzona wartość nie jest zgodna z formatem!");
                     setIsByteSeqTextFieldValid(textField, false);
@@ -191,7 +196,12 @@ public class MainController
             }
             else if(hexRadioButton.isSelected())
             {
-                if(!bytesSeqText.matches("[A-F0-9]+"))
+                if(bytesSeqText.length() > 8192) // nie mozna wprowadzic wiecej niz 4KB
+                {
+                    setNotValidTemplateForTextField(textField, tooltip, "Maksymalnie można wprowadzić 4KB!");
+                    setIsByteSeqTextFieldValid(textField, false);
+                }
+                else if(!bytesSeqText.matches("[A-F0-9]+"))
                 {
                     setNotValidTemplateForTextField(textField, tooltip, "Wprowadzona wartość nie jest zgodna z formatem!");
                     setIsByteSeqTextFieldValid(textField, false);
@@ -321,7 +331,6 @@ public class MainController
         resultController.setNewByteSeq(newByteSeqTextField.getText());
         resultController.setStartTime(startTime);
         resultController.setEndTime(endTime);
-        resultController.setFilesList(fileSearchModelTask.getFilesList());
         resultController.setFilesStatsMap(fileSearchModelTask.getFilesStatsMap());
         resultController.setErrorsMap(fileSearchModelTask.getErrorsMap());
         resultController.init(root);

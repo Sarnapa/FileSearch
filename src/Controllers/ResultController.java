@@ -1,24 +1,27 @@
 package Controllers;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
-import java.io.File;
+import javafx.util.Callback;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import static Controllers.Helpers.ControllersConverter.getDateFormat;
 
 public class ResultController
 {
-
-    @FXML
-    private ScrollPane mainDataScrollPane;
     @FXML
     private Label rootDirectoryLabel;
     @FXML
@@ -32,9 +35,7 @@ public class ResultController
     @FXML
     private Label endTimeLabel;
     @FXML
-    private Label durationLabel;
-    @FXML
-    private ListView filesListView;
+    private ListView<String> filesListView;
     @FXML
     private TableView filesStatsTableView;
     @FXML
@@ -47,9 +48,8 @@ public class ResultController
     private String newByteSeq;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
-    private ArrayList<File> filesList;
-    private HashMap<File, Integer> filesStatsMap;
-    private HashMap<File, Exception> errorsMap;
+    private Map<String, Integer> filesStatsMap;
+    private Map<String, Exception> errorsMap;
 
     public void setRootDirectory(String rootDirectory)
     {
@@ -81,17 +81,12 @@ public class ResultController
         this.endTime = endTime;
     }
 
-    public void setFilesList(ArrayList<File> filesList)
-    {
-        this.filesList = filesList;
-    }
-
-    public void setFilesStatsMap(HashMap<File, Integer> filesStatsMap)
+    public void setFilesStatsMap(Map<String, Integer> filesStatsMap)
     {
         this.filesStatsMap = filesStatsMap;
     }
 
-    public void setErrorsMap(HashMap<File, Exception> errorsMap)
+    public void setErrorsMap(Map<String, Exception> errorsMap)
     {
         this.errorsMap = errorsMap;
     }
@@ -128,22 +123,40 @@ public class ResultController
         newByteSeqLabel.setText(newByteSeq);
         startTimeLabel.setText(getDateFormat(startTime));
         endTimeLabel.setText(getDateFormat(endTime));
-        mainDataScrollPane.setFitToHeight(true);
     }
 
     private void setFilesPart()
     {
-
+        ObservableList<String> filenamesList = FXCollections.observableArrayList(filesStatsMap.keySet());
+        filesListView.setItems(filenamesList);
     }
 
     private void setFilesStatsPart()
     {
-
+        // Zeby nie bylo tego domyslnego napisu, gdy tabela pusta
+        filesStatsTableView.setPlaceholder(new Label(""));
+        List<TableColumn> columns = filesStatsTableView.getColumns();
+        TableColumn filenameCol = columns.get(0);
+        TableColumn modificationsCountCol = columns.get(1);
+        filenameCol.setCellValueFactory((Callback<TableColumn.CellDataFeatures<Map.Entry<String, Integer>, String>, ObservableValue<String>>) p ->
+                new SimpleStringProperty(p.getValue().getKey()));
+        modificationsCountCol.setCellValueFactory((Callback<TableColumn.CellDataFeatures<Map.Entry<String, Integer>, String>, ObservableValue<String>>) p ->
+                new SimpleStringProperty(p.getValue().getValue().toString()));
+        filesStatsTableView.setItems(FXCollections.observableArrayList(filesStatsMap.entrySet()));
     }
 
     private void setErrorsPart()
     {
-
+        // Zeby nie bylo tego domyslnego napisu, gdy tabela pusta
+        errorsTableView.setPlaceholder(new Label(""));
+        List<TableColumn> columns = errorsTableView.getColumns();
+        TableColumn filenameCol = columns.get(0);
+        TableColumn errorCol = columns.get(1);
+        filenameCol.setCellValueFactory((Callback<TableColumn.CellDataFeatures<Map.Entry<String, Exception>, String>, ObservableValue<String>>) p ->
+                new SimpleStringProperty(p.getValue().getKey()));
+        errorCol.setCellValueFactory((Callback<TableColumn.CellDataFeatures<Map.Entry<String, Exception>, String>, ObservableValue<String>>) p ->
+                new SimpleStringProperty(p.getValue().getValue().getMessage()));
+        errorsTableView.setItems(FXCollections.observableArrayList(errorsMap.entrySet()));
     }
 
 }

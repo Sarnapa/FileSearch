@@ -3,7 +3,6 @@ package Controllers.Helpers;
 import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 
 public final class ControllersConverter
 {
@@ -56,8 +55,7 @@ public final class ControllersConverter
     public static String getDateFormat(LocalDateTime time)
     {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss.SSS");
-        String formatDateTime = time.format(formatter);
-        return formatDateTime;
+        return time.format(formatter);
     }
 
 }
