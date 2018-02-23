@@ -184,6 +184,7 @@ public class MainController
             }
             else if(binRadioButton.isSelected())
             {
+                bytesSeqText = removeWhitespaces(bytesSeqText);
                 if(bytesSeqText.length() > 32768) // nie mozna wprowadzic wiecej niz 4KB
                 {
                     setNotValidTemplateForTextField(textField, tooltip, "Maksymalnie można wprowadzić 4KB!");
@@ -207,6 +208,7 @@ public class MainController
             }
             else if(hexRadioButton.isSelected())
             {
+                bytesSeqText = removeWhitespaces(bytesSeqText);
                 if(bytesSeqText.length() > 8192) // nie mozna wprowadzic wiecej niz 4KB
                 {
                     setNotValidTemplateForTextField(textField, tooltip, "Maksymalnie można wprowadzić 4KB!");
@@ -236,9 +238,9 @@ public class MainController
     {
         String fileExtension = fileExtensionTextField.getText();
         byte[] oldByteSeq = getByteArray(binFormatForOldByteSeqRadioButton, hexFormatForOldByteSeqRadioButton,
-                oldByteSeqTextField.getText());
+                removeWhitespaces(oldByteSeqTextField.getText()));
         byte[] newByteSeq = getByteArray(binFormatForNewByteSeqRadioButton, hexFormatForNewByteSeqRadioButton,
-                newByteSeqTextField.getText());
+                removeWhitespaces(newByteSeqTextField.getText()));
         fileSearchModelTask = new FileSearchModel(rootDirectory, fileExtension, oldByteSeq, newByteSeq);
         // Gdy zlecone zadanie sie zakonczy
         fileSearchModelTask.setOnSucceeded(e ->
@@ -327,6 +329,11 @@ public class MainController
     private boolean checkIfHighRiskFileExtension(String fileExtensionText)
     {
         return highRiskFileExtensions.contains(fileExtensionText.toUpperCase());
+    }
+
+    private static String removeWhitespaces(String text)
+    {
+        return text.replace(" ", "");
     }
 
     private void showResultView()
